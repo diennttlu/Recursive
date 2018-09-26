@@ -1,3 +1,5 @@
+#include <fstream>
+
 int GiaiThua(int n)
 {
 	if( n == 1)
@@ -42,7 +44,54 @@ void InBanCo(char  bc[][100], int n)
 	}
 	cout<<"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"<<endl;
 }
+void LuuXuongFile(char  bc[][100], int n)
+{	
+	ofstream fout;
+	fout.open("data.txt", ios::out|ios::app);
+	for(int i = 1;i<=n; i++)
+	{
+		for(int j = 1; j<=n;j++)
+			fout<<bc[i-1][j-1]<<" ";
+        fout<<endl;
+	}
+	fout.close();
+}
 
+void XuatHTML(char bc[][100], int n)
+{
+	//char c = k + 48;
+	//char fileName = 'file'+c+'.html'
+	ofstream fout("file.html");
+
+	fout<<"<!DOCTYPE html>"<<endl;
+	fout<<"	<html>"<<endl;
+	fout<<"	<head>"<<endl;
+	fout<<"		<title>Xep hau</title> "<<endl;
+	fout<<"		<style type=\"text/css\"> \n";
+    fout<<" 			th{ \n";
+    fout<<"      			text-align: center; \n";
+    fout<<"  			} \n";
+    fout<<"  			td{ \n";
+    fout<<"      				text-align: center;  \n";
+    fout<<" 					}\n";
+  	fout<<"			</style> \n";
+	fout<<"	</head>"<<endl;
+	fout<<"	<body>"<<endl;
+	fout<<"		<h2>So cach xep hau</h2>\n";
+	fout<<"		<table style=\"width:10%\" border = \"1\" >\n";
+	for(int i = 1;i<=n;i++)
+	{
+		
+		fout<<"			<tr>\n";
+			for(int j = 1;j<=n;j++)
+				fout<<"			<td>"<<bc[i-1][j-1]<<"</td>\n";
+		fout<<"			</tr>\n";
+	}
+	fout<<"		</table>\n";
+	fout<<"	</body>\n";
+	fout<<"	</html>\n";
+	fout.close();
+}
 bool XepDuocHau(int x, int y, char bc[][100], int n)
 {
 	 	for(int j = 1; j<y; j++) // check cot;
@@ -63,7 +112,11 @@ bool XepDuocHau(int x, int y, char bc[][100], int n)
 void XepHau(int c, char bc[][100], int n)// cot c;
 {
 	if(c>n)
+	{
 		InBanCo(bc,n); // Het ban co thi in;
+		LuuXuongFile(bc,n);
+		//XuatHTML(bc,n);
+	}	
 	else
 	{
 		for(int i = 1;i<= n;i++)
