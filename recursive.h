@@ -1,4 +1,33 @@
 #include <fstream>
+#include <stdlib.h>
+#include <string>
+#include <stdio.h>
+using namespace std;
+const char * myitoa(int n)
+{
+	char *a = new char [10];
+	int i = 0;
+	while(n>0)
+	{
+		a[i] = '0' + n%10;
+		n = n/10;
+		i++;		
+	}
+	for(int k =0;k<i/2;k++)
+	{
+		char t = a[k];
+		a[k] = a[i-k-1];
+		a[i-k-1] = t;
+		 
+	}
+	a[i] = '.';
+	a[i+1] = 'h';
+	a[i+2] = 't';
+	a[i+3] = 'm';
+	a[i+4] = 'l';
+	a[i+5] = '\0';
+	return a;
+}
 
 int GiaiThua(int n)
 {
@@ -47,7 +76,7 @@ void InBanCo(char  bc[][100], int n)
 void LuuXuongFile(char  bc[][100], int n)
 {	
 	ofstream fout;
-	fout.open("data.txt", ios::out|ios::app);
+	fout.open("data.txt");
 	for(int i = 1;i<=n; i++)
 	{
 		for(int j = 1; j<=n;j++)
@@ -57,11 +86,11 @@ void LuuXuongFile(char  bc[][100], int n)
 	fout.close();
 }
 
-void XuatHTML(char bc[][100], int n)
+void XuatHTML(char bc[][100], int n, int sc)
 {
 	//char c = k + 48;
 	//char fileName = 'file'+c+'.html'
-	ofstream fout("file.html");
+	ofstream fout(myitoa(sc));
 
 	fout<<"<!DOCTYPE html>"<<endl;
 	fout<<"	<html>"<<endl;
@@ -77,14 +106,34 @@ void XuatHTML(char bc[][100], int n)
   	fout<<"			</style> \n";
 	fout<<"	</head>"<<endl;
 	fout<<"	<body>"<<endl;
-	fout<<"		<h2>So cach xep hau</h2>\n";
-	fout<<"		<table style=\"width:10%\" border = \"1\" >\n";
+	fout<<"		<h2>xep hau </h2>"<<sc<<"\n";
+	fout<<"		<table border = \"1\" >\n";
 	for(int i = 1;i<=n;i++)
 	{
 		
 		fout<<"			<tr>\n";
 			for(int j = 1;j<=n;j++)
-				fout<<"			<td>"<<bc[i-1][j-1]<<"</td>\n";
+			{
+				if (bc[i-1][j-1] == 'H')
+				{
+					fout<<"<td><img src=\"q.jpeg\" width=\"50\" height=\"50\"></td>"<<endl;
+					
+				}
+				else
+				{
+					if ((i+j) % 2 == 0)
+					{
+						fout<<"<td><img src=\"w.png\" width=\"50\" height=\"50\"></td>\n";
+					}
+					else
+					{
+						fout<<"<td bgcolor=\"black\"><img src=\"b.png\" width=\"50\" height=\"50\"></td>\n";
+						
+
+					}
+					//fout<<"			<td>"<<bc[i-1][j-1]<<"</td>\n";
+				}
+			}
 		fout<<"			</tr>\n";
 	}
 	fout<<"		</table>\n";
@@ -109,13 +158,14 @@ bool XepDuocHau(int x, int y, char bc[][100], int n)
 		}
 		return true;	
 }
-void XepHau(int c, char bc[][100], int n)// cot c;
+void XepHau(int c, char bc[][100], int n,int &sc)// cot c;
 {
 	if(c>n)
 	{
 		InBanCo(bc,n); // Het ban co thi in;
+		sc++;
 		LuuXuongFile(bc,n);
-		//XuatHTML(bc,n);
+		XuatHTML(bc,n,sc);
 	}	
 	else
 	{
@@ -124,7 +174,7 @@ void XepHau(int c, char bc[][100], int n)// cot c;
 			if(XepDuocHau(i,c,bc,n))
 			{
 				bc[i-1][c-1] = 'H';
-				XepHau(c+1, bc, n);
+				XepHau(c+1, bc, n,sc);
 		          bc[i-1][c-1] = '-';
 			}
 		}
@@ -132,6 +182,28 @@ void XepHau(int c, char bc[][100], int n)// cot c;
 }
 
 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 
 
 
